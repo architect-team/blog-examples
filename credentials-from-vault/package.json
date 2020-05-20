@@ -1,0 +1,19 @@
+{
+  "name": "@architect-blog/credentials-from-vault-sample",
+  "version": "1.0.0",
+  "description": "Source code matching the blog post,",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "keywords": [
+    "architect",
+    "vault"
+  ],
+  "author": "David Thor",
+  "license": "ISC",
+  "dependencies": {
+    "node-vault": "^0.9.15",
+    "pg": "^8.2.1"
+  }
+}
