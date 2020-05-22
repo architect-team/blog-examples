@@ -2,7 +2,7 @@ const VaultSDK = require('node-vault');
 const { Client: PostgresClient } = require('pg');
 
 const vault_client = VaultSDK({
-  apiVersion: 'v2',
+  apiVersion: 'v1',
   endpoint: process.env.VAULT_ADDR,
   token: process.env.VAULT_TOKEN // optional client token; can be fetched after valid initialization of the server
 });
