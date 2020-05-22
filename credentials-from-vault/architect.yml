@@ -3,6 +3,7 @@ language: node
 dependencies:
   postgres/postgres: 11
 parameters:
+  DEBUG: '*'
   DATABASE_HOST:
     value_from:
       dependency: postgres/postgres
