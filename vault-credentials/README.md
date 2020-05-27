@@ -34,7 +34,11 @@ First, create a postgres instance for your service to connect to. Be sure to pro
 you put into your vault:
 
 ```sh
-$ docker run -p 50000:5432 -e POSTGRES_USER=postgres -e POSTGRES_PASSWORD=postgres -e POSTGRES_DB=test postgres:11
+$ docker run -p 50000:5432 \
+    -e POSTGRES_USER=postgres \
+    -e POSTGRES_PASSWORD=postgres \
+    -e POSTGRES_DB=test \
+    postgres:11
 ```
 
 Next, start the service and reference the secret you created in your vault:
@@ -42,5 +46,10 @@ Next, start the service and reference the secret you created in your vault:
 ```sh
 $ npm install
 # Be sure to replace `VAULT_TOKEN` with the token you created earlier
-$ VAULT_TOKEN=<...> VAULT_ADDR=http://localhost:8200 DATABASE_USER_SECRET=secret/database#user DATABASE_PASSWORD_SECRET=secret/database#password DATABASE_NAME_SECRET=secret/database#name npm start
+$ VAULT_TOKEN=<...> \
+    VAULT_ADDR=http://localhost:8200 \
+    DATABASE_USER_SECRET=secret/database#user \
+    DATABASE_PASSWORD_SECRET=secret/database#password \
+    DATABASE_NAME_SECRET=secret/database#name \
+    npm start
 ```
