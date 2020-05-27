@@ -1,2 +1,6 @@
-# blog-examples
-Example code associated with different Architect.io blog posts
+# Architect Blog examples
+
+This repository includes source code matching blog posts published at
+blog.architect.io.
+
+[Visit the Architect Blog](https://blog.architect.io)
