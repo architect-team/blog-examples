@@ -7,7 +7,9 @@ const vault_client = VaultSDK({
   token: process.env.VAULT_TOKEN // optional client token; can be fetched after valid initialization of the server
 });
 
-// 
+// We're passing in a structured syntax to point to each secret key uniquely to
+// allow us to parameterize the database credentials as separate values:
+// (e.g. export DATABASE_USER_SECRET = 'secret/database#user')
 const readVaultSecret = async (secret) => {
   const prefix = secret.substring(0, secret.lastIndexOf('/'));
   const name = secret.substring(secret.lastIndexOf('/') + 1, secret.indexOf('#') >= 0 ? secret.indexOf('#') : undefined);
@@ -25,7 +27,7 @@ const run = async () => {
     database: await readVaultSecret(process.env.DATABASE_NAME_SECRET),
   };
   const postgres_client = new PostgresClient(postgres_config);
-  postgres_client.connect();
+  await postgres_client.connect();
 
   // Create and seed table
   await postgres_client.query('CREATE TABLE users (id int, last_name varchar(255), first_name varchar(255))');
@@ -33,7 +35,7 @@ const run = async () => {
 
   // Query seeded content
   const result = await postgres_client.query('SELECT * FROM users');
-  console.log(result.rows);
+  console.log(JSON.stringify(result.rows, null, 2));
 
   // Drop table and kill connection
   await postgres_client.query('DROP TABLE users');
