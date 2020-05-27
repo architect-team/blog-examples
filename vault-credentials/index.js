@@ -7,6 +7,7 @@ const vault_client = VaultSDK({
   token: process.env.VAULT_TOKEN // optional client token; can be fetched after valid initialization of the server
 });
 
+// 
 const readVaultSecret = async (secret) => {
   const prefix = secret.substring(0, secret.lastIndexOf('/'));
   const name = secret.substring(secret.lastIndexOf('/') + 1, secret.indexOf('#') >= 0 ? secret.indexOf('#') : undefined);

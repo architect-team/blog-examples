@@ -1,4 +1,4 @@
-name: postgres/postgres
+name: architect/postgres
 image: postgres:11
 interfaces:
   postgres: 5432

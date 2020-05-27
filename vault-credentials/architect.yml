@@ -1,19 +1,11 @@
-name: architect-blog/credentials-example-1
+name: architect/vault-credentials
 language: node
 dependencies:
-  postgres/postgres: 11
+  database: architect/postgres:11
 parameters:
   DEBUG: '*'
-  DATABASE_HOST:
-    value_from:
-      dependency: postgres/postgres
-      interface: postgres
-      value: $HOST
-  DATABASE_PORT:
-    value_from:
-      dependency: postgres/postgres
-      interface: postgres
-      value: $PORT
+  DATABASE_HOST: ${ dependencies.database.interfaces.postgres.host }
+  DATABASE_PORT: ${ dependencies.database.interfaces.postgres.port }
   VAULT_ADDR:
     description: Address of the vault server housing secrets
     default: http://host.docker.internal:8200
