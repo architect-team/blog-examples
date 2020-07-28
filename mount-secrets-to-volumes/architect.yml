@@ -1,0 +1,66 @@
+name: architect-blog/mount-secrets-to-volumes
+description: Sample project showing how applications can receive credentials via volume mounts
+
+parameters:
+  DB_USER:
+    description: Root username for the database instance
+    default: postgres
+  DB_PASS:
+    description: Root password for the database instance
+    default: password
+  DB_NAME:
+    description: Name of the application database
+    default: architect
+  SECRET_MOUNT_PATH:
+    description: Path on the application container to mount secrets to
+    default: /usr/src/secrets
+  DB_SECRET_FILENAME:
+    description: Name of the file containing the database credentials
+    default: database.json
+
+interfaces: {}
+
+services:
+  database:
+    image: postgres:11
+    interfaces:
+      postgres:
+        port: 5432
+        protocol: postgresql
+    environment:
+      POSTGRES_USER: ${ parameters.DB_USER }
+      POSTGRES_PASSWORD: ${ parameters.DB_PASS }
+      POSTGRES_DB: ${ parameters.DB_NAME }
+
+  app:
+    build:
+      context: .
+    volumes:
+      secrets:
+        description: Volume containing application secrets
+        mount_path: ${ parameters.SECRET_MOUNT_PATH }
+    interfaces: {}
+    environment:
+      # We can dynamically assign the database host and port by referring to the database service
+      DB_HOST: ${ services.database.interfaces.postgres.host }
+      DB_PORT: ${ services.database.interfaces.postgres.port }
+
+      # We can also join our two parameters together to form the credential file path
+      DB_CREDENTIALS_FILE: ${ parameters.SECRET_MOUNT_PATH }/${ parameters.DB_SECRET_FILENAME }
+
+      # By placing the root credentials into an environment variable, we can seed the credential file automatically
+      CONFIG_FILE: |
+        {
+          "user": "${ parameters.DB_USER }",
+          "password": "${ parameters.DB_PASS }",
+          "database": "${ parameters.DB_NAME }"
+        }
+    # Before we run `npm start`, we're going to write the $CONFIG_FILE to the credentials
+    # file path so our app will run properly
+    command:
+      - sh
+      - -c
+      - |
+        echo $$CONFIG_FILE > $$DB_CREDENTIALS_FILE ;
+        sleep 2 ;
+        npm start

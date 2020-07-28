@@ -1,0 +1,19 @@
+{
+  "name": "@architect-blog/mount-secrets-to-volumes",
+  "version": "0.1.0",
+  "description": "Sample code associated with Architect's blog post on mounting secrets to volumes",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "keywords": [
+    "architect",
+    "secrets",
+    "volumes"
+  ],
+  "author": "David Thor",
+  "license": "ISC",
+  "dependencies": {
+    "pg": "^8.3.0"
+  }
+}
